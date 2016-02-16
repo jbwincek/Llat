@@ -22,3 +22,20 @@ grabs algorithms off of algdb.net and saves them as a json file.
     * thank_you
     * train_more
     * select_choice
+    
+    
+###Roadmap and progress
+- [ ] user interface
+  - [ ] npyscreen.NPSAppManaged main app class
+    - [ ] addForm splash screen while initializing
+    - [ ] addForm menu screen
+    - [ ] addForm training mode
+  - [ ] splash screen
+    - [ ] draw figlets style title
+    - [ ] algorithms loading
+    - [ ] preferences loading
+    - [ ] silence for Microphone initialization 
+  - [ ] menu system 
+    - [ ] start training
+    - [ ] help 
+    
