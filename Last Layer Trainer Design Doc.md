@@ -23,8 +23,8 @@ grabs algorithms off of algdb.net and saves them as a json file.
     * train_more
     * select_choice
     
-    
-###Roadmap and progress
+
+####Roadmap and progress
 - [ ] user interface
   - [ ] npyscreen.NPSAppManaged main app class
     - [ ] addForm splash screen while initializing
@@ -65,7 +65,9 @@ grabs algorithms off of algdb.net and saves them as a json file.
     - [ ] voice control handler
     
 - [ ] testing suit (pytest)
-    [ ] alg reverser test
-    [ ] alg TTS prep test
-    [ ] preference loader test
-    [ ] preference saver test
+  - [ ] alg reverser test
+  - [ ] alg TTS prep test
+  - [ ] preference loader test
+  - [ ] preference saver test
+
+
