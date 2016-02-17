@@ -37,5 +37,35 @@ grabs algorithms off of algdb.net and saves them as a json file.
     - [ ] silence for Microphone initialization 
   - [ ] menu system 
     - [ ] start training
-    - [ ] help 
+    - [ ] options 
+      - [ ] enable/disable voice command
+    - [ ] help
+      - [ ] list keyboard shortcuts
+      - [ ] list voice commands
+  - [ ] training mode
+    - [ ] render card
+        - [ ] show front
+        - [ ] show back
+    - [ ] handle algorithm preference selection (highlighting)
+    - [ ] show basic command and progress info at the bottom
+
+- [ ] functional
+  - [ ] loading algorithms
+  - [ ] preferences (both algorithm prefs and app options like voice control)
+    - [ ] loading
+    - [ ] saving
+  - [ ] initializing voice control
+    - [ ] only if it says so in the preferences, defaults to yes
+    - [ ] Microphone initialization and background volume check
+  - [ ] algorithm utilities
+    - [ ] reverse algs
+    - [ ] prep alg for TTS 
+  - [ ] handlers
+    - [ ] keyboard input handler
+    - [ ] voice control handler
     
+- [ ] testing suit (pytest)
+    [ ] alg reverser test
+    [ ] alg TTS prep test
+    [ ] preference loader test
+    [ ] preference saver test
