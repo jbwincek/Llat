@@ -2,12 +2,16 @@ import npyscreen as ns
 import time
 
 
+class MainMenuWidget(ns.MultiLineAction):
+    pass
+
+
 class MainMenu(ns.Form):
     # Main Menu consisting of a list of options to choose from
     def create(self):
         self.how_exited_handers[ns.wgwidget.EXITED_ESCAPE] = self.exit_application
         self.add(ns.TitleText, name='form name')
-        self.add(ns.SelectOne, name='Options', max_height=4, values=['train', 'help', 'quit'])
+        self.add(MainMenuWidget( name='Options', max_height=4, values=['train', 'help', 'quit'])
         # self.add_handlers({
         #                 "^d": self.exit_application(), })
 

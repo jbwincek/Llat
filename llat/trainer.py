@@ -3,6 +3,7 @@ from blessings import Terminal
 import json
 import random
 import sys
+import re
 import pycuber as pc
 from pyfiglet import Figlet
 
@@ -23,14 +24,29 @@ def load_algs(filename):
 
 
 def reverse_alg(alg):
+    # reverses an alg
     return pc.Formula(alg).reverse()
 
 
 def format_alg_for_speech(alg):
+    """ Take in an algorithm in the standard notation, and return an algorithm formatted for
+    something a TTS program could pronounce. R2 -> R two, R' -> R prime.
+    """
+    is_double_step = re.compile('([bBdDEfFlLMrRSuUxyzXYZ]2)')
+    is_prime = re.compile("[bBdDEfFlLMrRSuUxyzXYZ]\'")
     splitted = alg.split()
+    result = ''
+    for step in splitted:
+        if is_double_step.match(step): # handle case the R2 esque case
+            result += '{} two'.format(step[0])
+        elif is_prime.match(step):  # ' style prime, not mathematical prime
+            result += '{} prime'.format(step[0])
+        else:
+            result += step
 
 
 def display_alg(alg):
+    # TODO display algs
     pass
 
 
