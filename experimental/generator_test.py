@@ -1,4 +1,3 @@
-import blessings
 
 """ Notes on technique 1:
         * the function print statements skips things
@@ -58,4 +57,82 @@ def run_2():
     gen.send('hello')
 
 
-run_2()
+#  run_2()
+
+""" Notes on technique 3: (trying to use async / await for keyboard input handling)
+    * async is hard
+    * it seems like it needs to be "async all the way down"
+    * DOESN'T WORK CURRENTLY
+
+"""
+import asyncio
+from curtsies import Input
+
+
+@asyncio.coroutine
+def wait_for_keystroke():
+    with Input() as input_generator:
+        yield from input_generator
+
+async def gen_test_3():
+    while True:
+        key = await wait_for_keystroke()
+        print('got: {}'.format(key))
+        if key == 'q':
+            break
+
+
+def run_3():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(gen_test_3())
+    loop.close()
+
+#  run_3()
+
+""" Notes on technique 4: box drawing
+    * render_to_terminal flushes when it renders
+    * getting FSArray slices correct is hard:
+        * follows format [height,width]
+        * the top left corner is [0,0]
+        * the bottom right corner is [height-1, width-1]
+"""
+
+from curtsies import fmtstr, FSArray, fsarray
+from curtsies import FullscreenWindow
+import time
+
+
+def returns_FSArray_boxes(height, width):
+    top_left = '╒'
+    top_right = '╕'
+    bottom_left = '╘'
+    bottom_right = '╛'
+    horizontal = '═'
+    vertical = '│'
+    box_array = fsarray([' ' * width for _ in range(height)])
+    # FSArrays are height,width <- weird but true
+    box_array[0,0] = top_left
+    box_array[0,width-1] = top_right
+    box_array[height-1,0] = bottom_left
+    box_array[height-1,width-1] = bottom_right
+    if width>2:
+        span = width-2
+        for index in range(span):
+            box_array[0,index+1] = horizontal
+            box_array[height-1, index + 1] = horizontal
+    if height>2:
+        span = height-2
+        for index in range(span):
+            box_array[index+1,0] = vertical
+            box_array[index+1,width-1] = vertical
+    return box_array
+
+
+def run_4():
+    with FullscreenWindow() as win:
+        for i in range(1,15):
+            win.render_to_terminal(returns_FSArray_boxes(i,i*2))
+            time.sleep(.2)
+
+run_4()
+
