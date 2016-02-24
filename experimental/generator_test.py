@@ -265,9 +265,6 @@ def run_6():
         * exceptions propagate out from the generator, hence the raise stop iteration error
 """
 
-from curtsies import formatstringarray
-
-
 def string_as_array_of_width(string, width):
     """take a string, and break it into a list of strings,
        each of maximum length width, return that list as an FSArray"""
@@ -275,12 +272,14 @@ def string_as_array_of_width(string, width):
     line_number = 0
     for i, character in enumerate(string):
         lines[line_number] = lines[line_number] + character
-        if i % width == 0:
+        if i > 2 and i % width == 0:
             line_number += 1
             lines.append('')
     return fsarray(lines)
 
 def produce_box_of_size_height_width(height, width):
+    """ Give it height and width, and it'll give you a bordered box as a FSArray.
+    """
     top_left = '╒'
     top_right = '╕'
     bottom_left = '╘'
@@ -292,31 +291,30 @@ def produce_box_of_size_height_width(height, width):
     box_array[0, width - 1] = top_right
     box_array[height - 1, 0] = bottom_left
     box_array[height - 1, width - 1] = bottom_right
-
-    if width > 2:
+    if width >= 3:  # fill space between corners if needed
         span = width - 2
         for index in range(span):
             box_array[0, index + 1] = horizontal
             box_array[height - 1, index + 1] = horizontal
-    if height > 2:
+    if height >= 3:
         span = height - 2
         for index in range(span):
             box_array[index + 1, 0] = vertical
             box_array[index + 1, width - 1] = vertical
     return box_array
 
-def yields_FSArray_boxes(height=10, width=20):
-
-    cursor = [0,0] # used to remember the position in a contents box
+def yields_FSArray_boxes(height=40, width=80, contents=''):
+    """ A coroutine style generator for creating boxes with borders and content_array
+    """
+    cursor = [0,0] # used to remember the position in a content_array box
     box_updated = True
-    content_string = ''
-    contents = fsarray('')
+    content_string = contents
+    content_array = fsarray('')
     while True:
         if box_updated:
             box_array = produce_box_of_size_height_width(height,width)
-            box_array[1:contents.height+1, 1: contents.width+1] = contents
+            box_array[1:content_array.height + 1, 1: content_array.width + 1] = content_array
             box_updated = False
-
         yielded = yield box_array
         if yielded and isinstance(yielded, str):
             if yielded == 'q':
@@ -325,7 +323,7 @@ def yields_FSArray_boxes(height=10, width=20):
                 if yielded == '<SPACE>':
                     yielded = ' '
                 content_string += yielded
-                contents = string_as_array_of_width(content_string,width-3) # width-3 because
+                content_array = string_as_array_of_width(content_string, width - 3) # width-3 because
                 #  2 columns get used up on the frame
                 if cursor[1] >= width - 2:
                     cursor[1] = 1
@@ -334,7 +332,6 @@ def yields_FSArray_boxes(height=10, width=20):
                     cursor[1] += 1
             # This is how curtsies represents arrow keys:
             elif yielded in ('<UP>', '<DOWN>', '<RIGHT>', '<LEFT>'):
-
                 if yielded == '<UP>':
                     height += 1
                 elif yielded == '<DOWN>' and height >= 3: # don't let the box poof it self
