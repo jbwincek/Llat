@@ -303,6 +303,7 @@ def produce_box_of_size_height_width(height, width):
             box_array[index + 1, width - 1] = vertical
     return box_array
 
+
 def yields_FSArray_boxes(height=40, width=80, contents=''):
     """ A coroutine style generator for creating boxes with borders and content_array
     """
@@ -363,4 +364,6 @@ def run_7():
                         break
                 break
 
-run_7()
+#run_7()
+
+
